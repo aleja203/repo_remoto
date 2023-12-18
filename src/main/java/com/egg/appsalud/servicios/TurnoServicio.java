@@ -6,6 +6,7 @@ import com.egg.appsalud.entidades.Paciente;
 import com.egg.appsalud.entidades.Profesional;
 import com.egg.appsalud.entidades.Turno;
 import com.egg.appsalud.repositorios.TurnoRepositorio;
+import java.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,25 +25,43 @@ public class TurnoServicio {
     private TurnoRepositorio turnoRepositorio;
 
     @Transactional
-    public List<Turno> generarTurnos(Profesional profesional) {
-        List<Turno> turnos = new ArrayList<>();
+   public List<Turno> generarTurnos(Profesional profesional, List<LocalDate> fechasDisponibles) {
+    List<Turno> turnos = new ArrayList<>();
+        
+//        LocalTime horaActual = profesional.getHorarioEntrada();
+//
+//        for (DiaSemana dia : profesional.getFechasDisponibles()) {
+//            String nombreDia = dia.getNombreEnCastellano();
+//
+//            while (horaActual.isBefore(profesional.getHorarioSalida())) {
+//                Turno turno = new Turno();
+//                turno.setProfesional(profesional);
+//                turno.setDisponibilidad(true);
+//                turno.setFecha(nombreDia);
+//                turno.setHora(horaActual.toString());
+//
+//                turnos.add(turno);
+//                horaActual = horaActual.plusMinutes(30);
+//            }
+//            horaActual = profesional.getHorarioEntrada();
+//        }
+
+        for (LocalDate fecha : fechasDisponibles) {
         LocalTime horaActual = profesional.getHorarioEntrada();
 
-        for (DiaSemana dia : profesional.getDiasDisponibles()) {
-            String nombreDia = dia.getNombreEnCastellano();
+        while (horaActual.isBefore(profesional.getHorarioSalida())) {
+            Turno turno = new Turno();
+            turno.setProfesional(profesional);
+            turno.setDisponibilidad(true);
+            turno.setFecha(fecha.toString()); // Establecer la fecha en formato de cadena (puede ajustarse según el formato requerido)
 
-            while (horaActual.isBefore(profesional.getHorarioSalida())) {
-                Turno turno = new Turno();
-                turno.setProfesional(profesional);
-                turno.setDisponibilidad(true);
-                turno.setFecha(nombreDia);
-                turno.setHora(horaActual.toString());
+            // Suponiendo que necesitas la hora actual en formato de cadena
+            turno.setHora(horaActual.toString()); 
 
-                turnos.add(turno);
-                horaActual = horaActual.plusMinutes(30);
-            }
-            horaActual = profesional.getHorarioEntrada();
+            turnos.add(turno);
+            horaActual = horaActual.plusMinutes(30);
         }
+    }
 
         turnoRepositorio.saveAll(turnos);
         return turnos;

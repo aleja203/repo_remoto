@@ -1,4 +1,8 @@
 -------------------------------------------------------------------------------
 Test set: com.egg.appsalud.AppSaludApplicationTests
 -------------------------------------------------------------------------------
-Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 31.529 s - in com.egg.appsalud.AppSaludApplicationTests
+Tests run: 1, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 3.868 s <<< FAILURE! - in com.egg.appsalud.AppSaludApplicationTests
+contextLoads  Time elapsed: 0.005 s  <<< ERROR!
+java.lang.IllegalStateException: Failed to load ApplicationContext
+Caused by: org.springframework.beans.factory.support.BeanDefinitionOverrideException: Invalid bean definition with name 'customSuccessHandler' defined in class path resource [com/egg/appsalud/SeguridadWeb.class]: Cannot register bean definition [Root bean: class [null]; scope=; abstract=false; lazyInit=null; autowireMode=3; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=seguridadWeb; factoryMethodName=customSuccessHandler; initMethodName=null; destroyMethodName=(inferred); defined in class path resource [com/egg/appsalud/SeguridadWeb.class]] for bean 'customSuccessHandler': There is already [Generic bean: class [com.egg.appsalud.CustomSuccessHandler]; scope=singleton; abstract=false; lazyInit=null; autowireMode=0; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=null; factoryMethodName=null; initMethodName=null; destroyMethodName=null; defined in file [C:\Users\agoos\Documents\NBProjects\AppSalud\target\classes\com\egg\appsalud\CustomSuccessHandler.class]] bound.
+

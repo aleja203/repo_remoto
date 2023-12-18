@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Calendario con selección múltiple</title>
+        <!-- Enlaces a las librerías CSS -->
+        <link href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" rel="stylesheet">
+        <!-- Estilos adicionales (opcional) -->
+        <style>
+          /* Estilos personalizados */
+          body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+          }
+          #calendar {
+            max-width: 900px;
+            margin: auto;
+          }
+        </style>
+        <!-- Agrega la referencia a jQuery -->
+        <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+      </head>
+<body>
+  <!-- Contenedor para el calendario -->
+    <input type="text" id="datePicker" name="datePicker" />
+
+    <!-- Enlaces a las librerías JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+    <!-- Script para inicializar el selector de fechas -->
+    <script>
+        $(document).ready(function() {
+        $('#datePicker').daterangepicker({
+            opens: 'left',
+            autoApply: true,
+            locale: {
+            format: 'YYYY-MM-DD',
+            separator: ' - ',
+            applyLabel: 'Aplicar',
+            cancelLabel: 'Cancelar',
+            fromLabel: 'Desde',
+            toLabel: 'Hasta',
+            customRangeLabel: 'Rango personalizado',
+            daysOfWeek: ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'],
+            monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+            firstDay: 1
+            }
+        });
+        });
+    </script>
+</body>
+</html>

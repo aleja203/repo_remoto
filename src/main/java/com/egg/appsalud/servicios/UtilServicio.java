@@ -11,16 +11,15 @@ public class UtilServicio {
     public void validar(String nombreUsuario, String password, String password2, String nombre, String
             apellido, Date fechaDeNacimiento, Long DNI, String email) throws MiException {
 
-
-        if (nombreUsuario.isEmpty() || nombreUsuario == null) {
-            throw new MiException("El nombre de usuario no puede estar vacio o Nulo");
+        if (nombreUsuario == null || nombreUsuario.isEmpty()) {
+            throw new MiException("El nombre de usuario no puede estar vacío o ser nulo");
         }
 
-        if (nombre.isEmpty() || nombre == null) {
+        if (nombre == null || nombre.isEmpty()) {
             throw new MiException("El nombre no puede estar vacío o ser nulo");
         }
 
-        if (apellido.isEmpty() || apellido == null) {
+        if (apellido == null || apellido.isEmpty()) {
             throw new MiException("El apellido no puede estar vacío o ser nulo");
         }
 
@@ -32,16 +31,18 @@ public class UtilServicio {
             throw new MiException("La fecha de nacimiento no puede ser nula");
         }
 
-        if (email.isEmpty() || email == null) {
+        if (email == null || email.isEmpty()) {
             throw new MiException("El email no puede estar vacío o ser nulo");
         }
 
-        if (password.isEmpty() || password == null || password.length() <= 5) {
-            throw new MiException("Las contraseñas no pueden estar vacias y tener menos de 5 caracteres ");
+        if (password == null || password.isEmpty() || password.length() <= 5) {
+            throw new MiException("Las contraseñas no pueden estar vacías y deben tener más de 5 caracteres");
         }
 
         if (!password.equals(password2)) {
-            throw new MiException("las contraseñas deben coincidir");
+            throw new MiException("Las contraseñas deben coincidir");
         }
     }
 }
+
+

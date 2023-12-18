@@ -32,17 +32,20 @@ public interface ProfesionalRepositorio extends JpaRepository<Profesional, Strin
 
    
     
-    @Query("SELECT p FROM Profesional p " +
-           "WHERE (:especialidad IS NULL OR p.especialidad LIKE %:especialidad%) " +
-           "ORDER BY CASE WHEN :columna = 'nombre' THEN p.nombre END, " +
-                     "CASE WHEN :columna = 'apellido' THEN p.apellido END, " +
-                     "CASE WHEN :columna = 'especialidad' THEN p.especialidad END, " +
-                     "CASE WHEN :columna = 'PrecioConsulta' THEN p.PrecioConsulta END, " +
-                     "CASE WHEN :columna = 'valoracionProfesional' THEN p.valoracionProfesional END DESC")
+    @Query("SELECT p FROM Profesional p "
+            + "WHERE (:especialidad IS NULL OR p.especialidad LIKE %:especialidad%) "
+            + "ORDER BY CASE WHEN :columna = 'nombre' THEN p.nombre END, "
+            + "CASE WHEN :columna = 'apellido' THEN p.apellido END, "
+            + "CASE WHEN :columna = 'especialidad' THEN p.especialidad END, "
+            + "CASE WHEN :columna = 'PrecioConsulta' THEN p.PrecioConsulta END, "
+            + "CASE WHEN :columna = 'valoracionProfesional' THEN p.valoracionProfesional END DESC")
     List<Profesional> findByEspecialidadAndSort(
             @Param("especialidad") String especialidad,
             @Param("columna") String columna,
             Sort sort
     );
+    
+    @Query("SELECT p FROM Profesional p JOIN FETCH p.fechasDisponibles WHERE p.id = :profesionalId")
+    Profesional buscarConFechasDisponiblesPorId(@Param("profesionalId") String profesionalId);
 
 }

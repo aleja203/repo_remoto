@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="en">
+
+<!-- <head th:replace="layout/head :: head"></head> -->
+<head th:fragment="head">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Healthify</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link href="/style.css" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/5dfa94132d.js" crossorigin="anonymous"></script>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css" rel="stylesheet">
+   <link href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/5.10.1/main.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/5.10.1/main.min.js"></script>
+
+    <link href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <style>
+        /* Estilos personalizados */
+        body {
+          font-family: Arial, sans-serif;
+          margin: 40px;
+        }
+        #calendar {
+          max-width: 900px;
+          margin: auto;
+        }
+      </style>
+      <!-- Agrega la referencia a jQuery -->
+      <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+      <link href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" rel="stylesheet">
+        <!-- Estilos adicionales (opcional) -->
+        <style>
+          /* Estilos personalizados */
+          body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+          }
+          #calendar {
+            max-width: 900px;
+            margin: auto;
+          }
+        </style>
+        <!-- Agrega la referencia a jQuery -->
+        <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+
+</head>
+
+<body>
+<!-- <header th:replace="layout/header :: header"></header>-->
+<nav th:replace="layout/navbar :: navbar"></nav>
+
+<div th:replace="/layout/msg_error_exito :: mensajeFragment(${exito}, ${error})"></div>
+
+<div class="container mt-5">
+
+    <div class="card shadow p-5">
+        <div class="card-header">
+            <h2 class="brand">Registrate!</h2>
+            <p>Para Registrarte como paciente haz click <span>
+            <a th:href="@{/registroPaciente}">aquí</a>
+            </span></p>
+        </div>
+        <div class="card-body">
+            <form th:action="@{/registrarProfesional}" method="POST" enctype="multipart/form-data" class="row g-3">
+                <div class="col-md-6">
+                    <label for="nombre">Nombre</label>
+                    <input type="text" id="nombre" name="nombre" class="form-control" placeholder="Ingrese su nombre"
+                           required>
+                </div>
+                <div class="col-md-6">
+                    <label for="apellido">Apellido</label><br>
+                    <input type="text" id="apellido" name="apellido" class="form-control"
+                           placeholder="Ingrese su apellido" required>
+                </div>
+                <div class="col-md-6">
+                    <label for="dni">Número de DNI</label><br>
+                    <input type="number" id="dni" name="dni" class="form-control"
+                           placeholder="Ingrese su número de DNI" required>
+                </div>
+                <div class="col-md-6">
+                    <label>Fecha de Nacimiento</label><br>
+                    <div>
+                        <input type="date" name="fechaDeNacimiento" class="form-control"
+                               placeholder="Ingrese su fecha de nacimiento" required>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <label>Correo electrónico</label><br>
+                    <div>
+                        <input type="email" name="email" class="form-control" placeholder="Ingrese su e-mail" required>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <label>Nombre de usuario</label><br>
+                    <div>
+                        <input type="text" name="nombreUsuario" class="form-control" placeholder="Ingrese su usuario"
+                               required>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <label>Contraseña</label><br>
+                    <div>
+                        <input type="password" name="password" class="form-control" placeholder="Ingrese su contraseña"
+                               required>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <label>Contraseña</label><br>
+                    <div>
+                        <input type="password" name="password2" class="form-control"
+                               placeholder="Ingrese nuevamente su contraseña" required>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <label for="matricula">Matrícula</label><br>
+                    <input type="text" id="matricula" name="matricula" class="form-control"
+                           placeholder="Ingrese su número de matrícula" required>
+                </div>
+
+                <div class="col-md-6">
+                    <label for="provincias">Provincia: </label>
+                    <select name="provincias" id="provincias" required>
+                        <option th:each="provincia : ${provincias}"
+                                th:value="${provincia}"
+                                th:text="${provincia}">
+                        </option>
+                    </select>
+                </div>
+
+                <div class="col-md-6">
+                    <label for="localidad">Localidad: </label><br>
+                    <input type="text" id="localidad" name="localidad" class="form-control"
+                           placeholder="Ingrese localidad" required>
+                </div>
+
+                <div class="col-md-6">
+                    <label for="direccion">Dirección: </label>
+                    <input type="text" id="direccion" name="direccion" class="form-control"
+                           placeholder="Ej: Calle Necochea 1232 3-A" required>
+                </div>
+
+                <div class="col-md-6">
+                    <label for="especialidad">Especialidad médica:</label>
+                    <select name="especialidad" id="especialidad" required>
+                        <option th:each="especialidad : ${especialidades}"
+                                th:value="${especialidad}"
+                                th:text="${especialidad}">
+                        </option>
+                    </select>
+                </div>
+
+                <div class="col-md-6">
+                    <label for="imagen">Foto de Perfil: </label>
+                    <input type="file" id="imagen" name="archivo" class="form-control">
+                </div>
+
+                <div class="col-md-6">
+                    <label for="precioConsulta">Precio de la consulta: </label>
+                    <input type="number" class="form-control" id="precioConsulta" name="precioConsulta" required>
+                </div>
+
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="fechaDisponible">Fechas Disponibles:</label>
+                        <!-- Contenedor para el selector de fechas -->
+                        <!-- <input type="text" id="datePicker" name="datePicker" /> -->
+                        <input type="text" id="datePicker" name="datePicker" readonly placeholder="Mostrar calendario" />
+                        <button id="guardarFechas">Guardar fechas seleccionadas</button>
+                    </div>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <label for="horarioEntrada">Entrada:</label>
+                        <select class="form-control" id="horarioEntrada" name="horarioEntrada" required>
+                            <option value="08:00">08:00 AM</option>
+                            <option value="08:30">08:30 AM</option>
+                            <option value="09:00">09:00 AM</option>
+                            <option value="09:30">09:30 AM</option>
+                            <option value="10:00">10:00 AM</option>
+                            <option value="10:30">10:30 AM</option>
+                            <option value="11:00">11:00 AM</option>
+                        </select>
+                        <label for="horarioSalida">Salida:</label>
+                        <select class="form-control" id="horarioSalida" name="horarioSalida" required>
+                            <option value="14:00">02:00 PM</option>
+                            <option value="14:30">02:30 PM</option>
+                            <option value="15:00">03:00 PM</option>
+                            <option value="15:30">03:30 PM</option>
+                            <option value="16:00">04:00 PM</option>
+                            <option value="16:30">04:30 PM</option>
+                            <option value="17:00">05:00 PM</option>
+                            <option value="17:30">05:30 PM</option>
+                            <option value="18:00">06:00 PM</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <!--                            <div class="custom-control custom-checkbox">-->
+                <!--                                <input type="checkbox" class="custom-control-input" id="sabado" value="SABADO"-->
+                <!--                                       name="diasDisponibles">-->
+                <!--                                <label class="custom-control-label" for="sabado">Sábado</label>-->
+                <!--                            </div>-->
+                <!--                            <div class="custom-control custom-checkbox">-->
+                <!--                                <input type="checkbox" class="custom-control-input" id="domingo" value="DOMINGO"-->
+                <!--                                       name="diasDisponibles">-->
+                <!--                                <label class="custom-control-label" for="domingo">Domingo</label>-->
+                <!--                            </div>-->
+
+
+                <div>
+                    <button type="submit" class="btn btn-primary">Enviar</button>
+                </div>
+                <p class="text-muted"> Ya estás registrado? <a class="text-active" th:href="@{/portal/login}">inicia
+                    Sesión</a></p>
+            </form>
+        </div>
+    </div>
+</div>
+<footer th:replace="layout/footer :: footer"></footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+    <!-- Script para inicializar el selector de fechas -->
+    <script>
+        $(document).ready(function () {
+            var fechaDisponible = []; // Array para almacenar las fechas seleccionadas
+
+            $('#datePicker').daterangepicker({
+                opens: 'left',
+                autoApply: true,
+                autoUpdateInput: false,
+                showDropdowns: true,
+                minDate: moment(),
+                locale: {
+                    format: 'YYYY-MM-DD',
+                    separator: ' - ',
+                    applyLabel: 'Aplicar',
+                    cancelLabel: 'Cancelar',
+                    fromLabel: 'Desde',
+                    toLabel: 'Hasta',
+                    customRangeLabel: 'Rango personalizado',
+                    daysOfWeek: ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'],
+                    monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+                    firstDay: 1
+                }
+            });
+
+            $('#datePicker').on('apply.daterangepicker', function (ev, picker) {
+                picker.preventDefault(); // Prevenir el comportamiento predeterminado de ocultar el calendario al aplicar cambios
+                picker.stopPropagation(); // Detener la propagación del evento de ocultar el calendario
+
+                // Actualizar el campo de entrada con las fechas seleccionadas
+                $(this).val(picker.startDate.format('YYYY-MM-DD') + ' - ' + picker.endDate.format('YYYY-MM-DD'));
+            });
+
+            // Evento para guardar las fechas seleccionadas en la lista "fechasDisponibles"
+            $('#guardarFechas').on('click', function () {
+                var fechasSeleccionadas = $('#datePicker').val().split(' - ');
+
+                // Agregar las fechas seleccionadas a la lista "fechaDisponible"
+                fechaDisponible.push({
+                    inicio: fechasSeleccionadas[0],
+                    fin: fechasSeleccionadas[1]
+                });
+
+                // Ejemplo: Mostrar el contenido de "fechaDisponible" en la consola
+                console.log('Fechas disponibles:', fechaDisponible);
+
+                // Limpiar el campo de entrada después de guardar las fechas
+                $('#datePicker').val('');
+            });
+        });
+
+
+</script>
+<!-- <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script> -->
+</body>
+
+</html>

@@ -3,11 +3,13 @@ package com.egg.appsalud.entidades;
 import com.egg.appsalud.Enumeracion.DiaSemana;
 import com.egg.appsalud.Enumeracion.Especialidad;
 import com.egg.appsalud.Enumeracion.Provincias;
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 import javax.persistence.*;
 
 import lombok.*;
+import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
 
 
@@ -18,8 +20,11 @@ import org.hibernate.annotations.GenericGenerator;
 @NoArgsConstructor
 @Table(name = "PROFESIONAL")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "rol",
-        discriminatorType = DiscriminatorType.STRING)
+//@DiscriminatorColumn(name = "rol",
+//        discriminatorType = DiscriminatorType.STRING)
+
+@DiscriminatorColumn(name = "rol", discriminatorType = DiscriminatorType.STRING)
+
 @DiscriminatorValue("PROFESIONAL")
 public class Profesional extends Usuario {
     @Id
@@ -69,6 +74,10 @@ public class Profesional extends Usuario {
     protected LocalTime horarioEntrada;
     protected LocalTime horarioSalida;
     protected String observaciones;
+    
+    @ElementCollection
+    @CollectionTable(name = "Profesional_FechasDisponibles")
+    private List<LocalDate> fechasDisponibles;
 
     @OneToMany(mappedBy = "profesional", fetch = FetchType.LAZY)
     private List<Turno> turnosCreados;

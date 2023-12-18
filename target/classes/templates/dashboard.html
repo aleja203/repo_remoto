@@ -18,22 +18,23 @@
 <p class="text-end m-4">Click para simular paciente <span>
                 <a th:href="@{/util/pacienteRandom}"><i class="fa fa-database"></i></a></span></p>
 
-<!--<div class="container mt-4">-->
-<!--    <form class="d-inline" id="miFormulario" th:action="@{/listaProfesionales}">-->
-<!--        <div class="form-group mx-sm-3 m-2 ">-->
-<!--            <label for="filtro" class="me-2">Filtrar:</label>-->
-<!--            <select name="especialidad" id="filtro">-->
-<!--                <option th:if="${valorSeleccionado != null and valorSeleccionado != ''}" value=""-->
-<!--                        th:selected="${valorSeleccionado}" th:text="${valorSeleccionado}"></option>-->
-<!--                <option value="">Todos</option>-->
-<!--                <option th:each="especialidad : ${especialidades}"-->
-<!--                        th:value="${especialidad}"-->
-<!--                        th:text="${especialidad}">-->
-<!--                </option>-->
-<!--            </select>-->
-<!--        </div>-->
-<!--    </form>-->
-<!--</div>-->
+<!-- <div class="container mt-4">
+   <form class="d-inline" id="miFormulario" th:action="@{/listaProfesionales}">
+       <div class="form-group mx-sm-3 m-2 ">
+           <label for="filtro" class="me-2">Filtrar:</label>
+           <select name="especialidad" id="filtro">
+               <option th:if="${valorSeleccionado != null and valorSeleccionado != ''}" value=""
+                       th:selected="${valorSeleccionado}" th:text="${valorSeleccionado}"></option>
+               <option value="">Todos</option>
+               <option th:each="especialidad : ${especialidades}"
+                       th:value="${especialidad}"
+                       th:text="${especialidad}">
+               </option>
+           </select>
+       </div>
+   </form>
+</div> -->
+
 
 <div class="container">
     <div class="col-md-12">
@@ -113,4 +114,5 @@
         });
     });
 </script>
+
 </html>

@@ -118,3 +118,7 @@ nav {
     font-size: 24px; /* Ajusta el tamaño del texto según tus preferencias */
     color: #005eff; /* Cambia el color del texto a negro */
 }
+
+#datePicker {
+    color: transparent;
+}

@@ -23,6 +23,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Date;
 import java.util.List;
+import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
 
 @Controller
 @Slf4j
@@ -42,9 +43,10 @@ public class PacienteControlador {
     TurnoServicio turnoServicio;
 
     @GetMapping("/solicitar/{id}")
-    public String solicitarCita(@PathVariable String id, ModelMap modelo, HttpSession session) {
+    public String solicitarCita(@PathVariable String id, ModelMap modelo, HttpSession session, HttpServletRequest request) {
 
         if (session.getAttribute("usuariosession") == null) {
+            new HttpSessionRequestCache().saveRequest(request, null);
             return "login";
         } else {
 

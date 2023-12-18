@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Calendario con Flatpickr</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+  <style>
+    /* Estilos para el contenedor del calendario */
+    #calendar {
+      width: 300px;
+      margin: 20px auto;
+    }
+  </style>
+</head>
+<body>
+
+<div>
+  <label for="fechasDisponibles">Fechas Disponibles:</label>
+  <input type="text" id="calendar" placeholder="Selecciona una fecha" readonly="readonly">
+  <button id="guardarFechas">Guardar fechas</button>
+</div>
+
+<ul id="fechasDisponibles">
+  <!-- Aquí se mostrarán las fechas seleccionadas -->
+</ul>
+
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script>
+  // Inicializar flatpickr
+  const calendar = flatpickr("#calendar", {
+    mode: "multiple", // Permite seleccionar múltiples fechas
+    dateFormat: "Y-m-d", // Formato de fecha
+    minDate: "today", // Establece la fecha mínima como hoy
+    // Otros parámetros y configuraciones pueden agregarse aquí
+  });
+
+  // Función para manejar el evento click del botón "Guardar fechas"
+  document.getElementById("guardarFechas").addEventListener("click", function() {
+    const fechasSeleccionadas = calendar.selectedDates; // Obtener fechas seleccionadas
+    const ulFechas = document.getElementById("fechasDisponibles");
+
+    // Eliminar todas las fechas anteriores de la lista ul
+    ulFechas.innerHTML = '';
+
+    // Agregar las fechas seleccionadas a la lista fechasDisponibles
+    fechasSeleccionadas.forEach(fecha => {
+      const li = document.createElement("li");
+      li.textContent = fecha.toLocaleDateString(); // Convertir fecha a formato legible
+      ulFechas.appendChild(li);
+    });
+  });
+</script>
+
+</body>
+</html>

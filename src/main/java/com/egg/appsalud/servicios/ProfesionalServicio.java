@@ -11,6 +11,7 @@ import com.egg.appsalud.entidades.*;
 import com.egg.appsalud.repositorios.ConsultaRepositorio;
 import com.egg.appsalud.repositorios.ProfesionalRepositorio;
 import com.egg.appsalud.repositorios.UsuarioRepositorio;
+import java.time.LocalDate;
 
 import java.time.LocalTime;
 
@@ -51,16 +52,16 @@ public class ProfesionalServicio implements UserDetailsService {
     private ConsultaRepositorio consultaRepositorio;
 
 
-    @Transactional
-    public void crearProfesional(MultipartFile archivo, String nombreUsuario, String password, String password2, String nombre, String apellido,
-                                 String email, Date fechaNacimiento, Long DNI, Especialidad especialidad, Provincias provincias, String localidad, String direccion,
-                                 Long matricula, List<DiaSemana> diasDisponibles, LocalTime horarioEntrada, LocalTime horarioSalida, Integer precioConsulta) throws MiException {
+   @Transactional
+public Profesional crearProfesional(MultipartFile archivo, String nombreUsuario, String password, String password2, String nombre, String apellido,
+                             String email, Date fechaNacimiento, Long DNI, Especialidad especialidad, Provincias provincias, String localidad, String direccion,
+                             Long matricula, LocalTime horarioEntrada, LocalTime horarioSalida, Integer precioConsulta, List<LocalDate> fechasDisponibles) throws MiException {
 
-        validar(nombreUsuario, password, password2, nombre, apellido, fechaNacimiento, DNI, email, matricula, especialidad, provincias, localidad, direccion);
+    validar(nombreUsuario, password, password2, nombre, apellido, fechaNacimiento, DNI, email, matricula, especialidad, provincias, localidad, direccion);
 
-        Profesional profesional = new Profesional();
+    Profesional profesional = new Profesional();
 
-        profesional.setNombre(nombre);
+    profesional.setNombre(nombre);
         profesional.setApellido(apellido);
         profesional.setFechaDeNacimiento(fechaNacimiento);
         profesional.setDNI(DNI);
@@ -74,7 +75,7 @@ public class ProfesionalServicio implements UserDetailsService {
 
         profesional.setMatricula(matricula);
         profesional.setEspecialidad(especialidad);
-        profesional.setDiasDisponibles(diasDisponibles);
+        //profesional.setDiasDisponibles(diasDisponibles);
         profesional.setHorarioEntrada(horarioEntrada);
         profesional.setHorarioSalida(horarioSalida);
         profesional.setPrecioConsulta(precioConsulta);
@@ -85,9 +86,12 @@ public class ProfesionalServicio implements UserDetailsService {
         profesional.setDireccion(direccion);
         profesional.setImagen(imagen);
 
+    profesional.setFechasDisponibles(fechasDisponibles);
 
-        profesionalRepositorio.save(profesional);
-    }
+    profesionalRepositorio.save(profesional);
+    return profesional;
+}
+
 
     @Transactional
     public void modificarProfesional(String id, MultipartFile archivo, String nombreUsuario, String nombre, String apellido,
@@ -136,62 +140,38 @@ public class ProfesionalServicio implements UserDetailsService {
                          String email, Long matricula, Especialidad especialidad, Provincias provincias, String localidad, String direccion) throws MiException {
 
 
-        if (nombreUsuario.isEmpty() || nombreUsuario == null) {
-            throw new MiException("El nombre de usuario no puede estar vacio o Nulo");
-
-        }
-
-
-        if (nombre.isEmpty() || nombre == null) {
-            throw new MiException("El nombre no puede estar vacío o ser nulo");
-        }
-
-        if (apellido.isEmpty() || apellido == null) {
-            throw new MiException("El apellido no puede estar vacío o ser nulo");
-        }
-
-        if (DNI == null) {
-            throw new MiException("El DNI no puede ser nulo");
-        }
-
-        if (fechaDeNacimiento == null) {
-            throw new MiException("La fecha de nacimiento no puede ser nula");
-        }
-
-        if (email.isEmpty() || email == null) {
-            throw new MiException("El email no puede estar vacío o ser nulo");
-        }
-
-        if (especialidad == null) {
-            throw new MiException("La especialidad no puede ser nula");
-        }
-
-        if (provincias == null) {
-            throw new MiException("La provincia no puede ser nula");
-        }
-
-        if (localidad == null) {
-            throw new MiException("La Localidad no puede ser nula");
-        }
-
-        if (direccion == null) {
-            throw new MiException("La especialidad no puede ser nula");
-        }
-
-        if (matricula == null) {
-            throw new MiException("La matrícula no puede ser nula");
-        }
-
-        if (password.length() <= 5) {
-            throw new MiException("Las contraseñas no pueden estar vacias y tener menos de 5 caracteres ");
-        }
-
-        if (!password.equals(password2)) {
-            throw new MiException("las contraseñas deben coincidir");
-        }
-
-
+    if (nombreUsuario == null || nombreUsuario.isEmpty()) {
+        throw new MiException("El nombre de usuario no puede estar vacío o ser nulo");
     }
+
+    if (nombre == null || nombre.isEmpty()) {
+        throw new MiException("El nombre no puede estar vacío o ser nulo");
+    }
+
+    if (apellido == null || apellido.isEmpty()) {
+        throw new MiException("El apellido no puede estar vacío o ser nulo");
+    }
+
+    if (DNI == null) {
+        throw new MiException("El DNI no puede ser nulo");
+    }
+
+    if (fechaDeNacimiento == null) {
+        throw new MiException("La fecha de nacimiento no puede ser nula");
+    }
+
+    if (email == null || email.isEmpty()) {
+        throw new MiException("El email no puede estar vacío o ser nulo");
+    }
+
+    if (password == null || password.isEmpty() || password.length() <= 5) {
+        throw new MiException("Las contraseñas no pueden estar vacías y deben tener más de 5 caracteres");
+    }
+
+    if (!password.equals(password2)) {
+        throw new MiException("Las contraseñas deben coincidir");
+    }
+}
 
     @Transactional
     public void recibirPuntuacion(String idConsulta, int puntuacion) {
@@ -241,40 +221,38 @@ public class ProfesionalServicio implements UserDetailsService {
 
     public void validar(String nombreUsuario, String password, String password2, String nombre, String apellido, Date fechaDeNacimiento, Long DNI, String email) throws MiException {
 
-        if (nombreUsuario.isEmpty() || nombreUsuario == null) {
-            throw new MiException("El nombre de usuario no puede estar vacio o Nulo");
-
-        }
-
-        if (nombre.isEmpty() || nombre == null) {
-            throw new MiException("El nombre no puede estar vacío o ser nulo");
-        }
-
-        if (apellido.isEmpty() || apellido == null) {
-            throw new MiException("El apellido no puede estar vacío o ser nulo");
-        }
-
-        if (DNI == null) {
-            throw new MiException("El DNI no puede ser nulo");
-        }
-
-        if (fechaDeNacimiento == null) {
-            throw new MiException("La fecha de nacimiento no puede ser nula");
-        }
-
-        if (email.isEmpty() || email == null) {
-            throw new MiException("El email no puede estar vacío o ser nulo");
-        }
-
-        if (password.isEmpty() || password == null || password.length() <= 5) {
-            throw new MiException("Las contraseñas no pueden estar vacias y tener menos de 5 caracteres ");
-        }
-
-        if (!password.equals(password2)) {
-            throw new MiException("las contraseñas deben coincidir");
-        }
-
+    if (nombreUsuario == null || nombreUsuario.isEmpty()) {
+        throw new MiException("El nombre de usuario no puede estar vacío o ser nulo");
     }
+
+    if (nombre == null || nombre.isEmpty()) {
+        throw new MiException("El nombre no puede estar vacío o ser nulo");
+    }
+
+    if (apellido == null || apellido.isEmpty()) {
+        throw new MiException("El apellido no puede estar vacío o ser nulo");
+    }
+
+    if (DNI == null) {
+        throw new MiException("El DNI no puede ser nulo");
+    }
+
+    if (fechaDeNacimiento == null) {
+        throw new MiException("La fecha de nacimiento no puede ser nula");
+    }
+
+    if (email == null || email.isEmpty()) {
+        throw new MiException("El email no puede estar vacío o ser nulo");
+    }
+
+    if (password == null || password.isEmpty() || password.length() <= 5) {
+        throw new MiException("Las contraseñas no pueden estar vacías y deben tener más de 5 caracteres");
+    }
+
+    if (!password.equals(password2)) {
+        throw new MiException("Las contraseñas deben coincidir");
+    }
+}
 
     public Profesional getOne(String id) {
         return profesionalRepositorio.getOne(id);
