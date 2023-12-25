@@ -9,6 +9,7 @@ import com.egg.appsalud.entidades.Paciente;
 import com.egg.appsalud.entidades.Profesional;
 import com.egg.appsalud.repositorios.ProfesionalRepositorio;
 import com.egg.appsalud.servicios.*;
+import com.mysql.cj.jdbc.exceptions.MysqlDataTruncation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -64,7 +65,7 @@ public class InicioController {
     }
 
     @PostMapping("/registrarPaciente")
-    public String registrarPaciente(@RequestParam MultipartFile archivo, @RequestParam String nombreUsuario, @RequestParam String nombre, @RequestParam String apellido, @RequestParam(required = false) Long dni, @RequestParam("fechaDeNacimiento") String fechaDeNacimientoStr, @RequestParam String email, @RequestParam String password, @RequestParam String password2, ModelMap modelo) throws MiException, ParseException {
+    public String registrarPaciente(@RequestParam MultipartFile archivo, @RequestParam String nombreUsuario, @RequestParam String nombre, @RequestParam String apellido, @RequestParam(required = false) Long dni, @RequestParam("fechaDeNacimiento") String fechaDeNacimientoStr, @RequestParam String email, @RequestParam String password, @RequestParam String password2, ModelMap modelo) throws MiException, ParseException, MysqlDataTruncation {
         Date fechaDeNacimiento;
         try {
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -72,24 +73,24 @@ public class InicioController {
 
         } catch (ParseException p) {
             modelo.put("error", "la fecha no puede venir vacía");
-            return "redirect:/portal/registroUsuario";
+            return "registroPaciente";
+        
         }
-
         try {
 
             pacienteServicio.crearPaciente(archivo, nombreUsuario, nombre, apellido, dni, fechaDeNacimiento, email, password, password2);
 
-            modelo.addAttribute("exito", null);
-            modelo.put("exito", "el usuario fue creado con exito");
-            return "redirect:/portal/login";
+//            modelo.addAttribute("exito", null);
+//            modelo.put("exito", "el usuario fue creado con exito");
+            modelo.addAttribute("exito", "El usuario fue creado con éxito"); 
+            System.out.println("Valor de exito en el modelo: " + modelo.get("exito"));
+            return "login";
         } catch (MiException e) {
 
             modelo.put("error", e.getMessage());
-
-            return "redirect:/portal/registroUsuario";
-        }
+            return "registrPaciente";
+        } 
     }
-
     @GetMapping("/registroProfesional")
     public String registroProfesional(ModelMap modelo) {
 
@@ -194,4 +195,6 @@ public String registrarProfesional(
     public String privacidad() {
         return "privacidad";
     }
+    
+   
 }

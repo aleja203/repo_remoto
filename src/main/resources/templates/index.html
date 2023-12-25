@@ -12,7 +12,10 @@
 <div>
     <nav th:replace="layout/navbar :: navbar"></nav>
 
-    <div th:replace="/layout/msg_error_exito :: mensajeFragment(${exito}, ${error})"></div>
+    <!-- <div th:replace="/layout/msg_error_exito :: mensajeFragment(${exito}, ${error})"></div> -->
+    <div th:if="${exito}" class="alert alert-success">
+        <p th:text="${exito}"></p>
+    </div>
     
     <!--Carrousel-->
         <section th:replace="/layout/carrousel :: section"></section>
@@ -29,6 +32,9 @@
     </div>
 -->
 </div>
+
+
+<div th:if="${error}" th:text="${error}"></div>
 
 <section class="blog mt-5">
     <div class="container">

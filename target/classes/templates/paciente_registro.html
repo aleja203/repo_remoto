@@ -9,7 +9,8 @@
 <nav th:replace="layout/navbar :: navbar"></nav>
 
 
-<div th:replace="/layout/msg_error_exito :: mensajeFragment(${exito}, ${error})"></div>
+<!-- <div th:replace="/layout/msg_error_exito :: mensajeFragment(${exito}, ${error})"></div> -->
+
 
 <div class="container mt-5">
 
@@ -27,59 +28,55 @@
 
                 <div class="col-md-6">
                     <label for="nombre">Nombre</label>
-                    <input type="text" id=nombre name="nombre" class="form-control" placeholder="Ingrese su nombre">
+                    <input type="text" id="nombre" name="nombre" class="form-control" placeholder="Ingrese su nombre" required>
                 </div>
 
                 <div class="col-md-6">
                     <label for="apellido">Apellido</label>
 
-                    <input type="text" id="apellido" name="apellido" class="form-control"
-                           placeholder="Ingrese su apellido">
+                    <input type="text" id="apellido" name="apellido" class="form-control" placeholder="Ingrese su apellido" required>
 
                 </div>
 
                 <div class="col-md-6">
                     <label for="dni">Número de DNI</label>
 
-                    <input type="number" id="dni" name="dni" class="form-control"
-                           placeholder="Ingrese su número de DNI">
+                    <input type="number" id="dni" name="dni" class="form-control" placeholder="Ingrese su número de DNI" required>
 
                 </div>
 
                 <div class="col-md-6">
                     <label>Fecha de Nacimiento</label>
                     <div>
-                        <input type="date" name="fechaDeNacimiento" class="form-control"
-                               placeholder="Ingrese su fecha de nacimiento">
+                        <input type="date" name="fechaDeNacimiento" class="form-control" placeholder="Ingrese su fecha de nacimiento" required>
                     </div>
                 </div>
 
                 <div class="col-md-6">
                     <label>Correo electrónico</label>
                     <div>
-                        <input type="email" name="email" class="form-control" placeholder="Ingrese su e-mail">
+                        <input type="email" name="email" class="form-control" placeholder="Ingrese su e-mail" required>
                     </div>
                 </div>
 
                 <div class="col-md-6">
                     <label>Nombre de usuario</label>
                     <div>
-                        <input type="text" name="nombreUsuario" class="form-control" placeholder="Ingrese su usuario">
+                        <input type="text" name="nombreUsuario" class="form-control" placeholder="Ingrese su usuario" required>
                     </div>
                 </div>
 
                 <div class="col-md-6">
                     <label>Contraseña</label>
                     <div>
-                        <input type="password" name="password" class="form-control" placeholder="Ingrese su contraseña">
+                        <input type="password" name="password" class="form-control" placeholder="Ingrese su contraseña" required>
                     </div>
                 </div>
 
                 <div class="col-md-6">
-                    <label>Contraseña</label>
+                    <label>Repita contraseña</label>
                     <div>
-                        <input type="password" name="password2" class="form-control"
-                               placeholder="Ingrese nuevamente su contraseña">
+                        <input type="password" name="password2" class="form-control" placeholder="Ingrese nuevamente su contraseña" required>
                     </div>
                 </div>
 
@@ -94,6 +91,11 @@
                 <p class="text-muted"> Ya estás registrado? <a class="text-active" th:href="@{/portal/login}">inicia
                     Sesión</a></p>
             </form>
+            <div th:if="${exito}" class="alert alert-success">
+                <p th:text="${exito}"></p>
+            </div>
+            <div th:if="${error}" th:text="${error}"></div>
+            
         </div>
 
     </div>

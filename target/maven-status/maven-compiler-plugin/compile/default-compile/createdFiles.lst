@@ -12,7 +12,6 @@ com\egg\appsalud\entidades\Turno.class
 com\egg\appsalud\entidades\Consulta.class
 com\egg\appsalud\repositorios\UsuarioRepositorio.class
 com\egg\appsalud\controladores\TurnoController.class
-com\egg\appsalud\controladores\ErroresControlador.class
 com\egg\appsalud\servicios\ImagenServicio.class
 com\egg\appsalud\servicios\UsuarioServicio.class
 com\egg\appsalud\entidades\Imagen.class

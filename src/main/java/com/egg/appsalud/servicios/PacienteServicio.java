@@ -67,10 +67,11 @@ public class PacienteServicio {
         return pacienteRepositorio.findAll();
     }
 
-    @Transactional
-    public void modificarPacientes(MultipartFile archivo, String id, String nombreUsuario, String nombre, String apellido,
-                                   Long DNI, Date fechaNacimiento, String email, String password, String password2) throws MiException {
+@Transactional
+public void modificarPacientes(MultipartFile archivo, String id, String nombreUsuario, String nombre, String apellido,
+                               Long DNI, Date fechaNacimiento, String email, String password, String password2) throws MiException {
 
+    try {
         utilServicio.validar(nombreUsuario, password, password2, nombre, apellido, fechaNacimiento, DNI, email);
 
         Optional<Paciente> respuesta = pacienteRepositorio.findById(id);
@@ -90,9 +91,15 @@ public class PacienteServicio {
             paciente.setImagen(imagen);
 
             pacienteRepositorio.save(paciente);
-
+        } else {
+            throw new MiException("El paciente con ID: " + id + " no existe");
         }
+    } catch (Exception ex) {
+        // Manejo de la excepción general
+        throw new MiException("Error al modificar el paciente: " + ex.getMessage());
     }
+}
+
 
     @Transactional(readOnly = true)
     public Paciente getOne(String id) {

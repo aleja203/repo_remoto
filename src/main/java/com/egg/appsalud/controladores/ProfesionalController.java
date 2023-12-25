@@ -44,34 +44,58 @@ public class ProfesionalController {
         return "profesional_edit";
     }
 
-    @PostMapping("/editar/{id}")
-    public String editarProfesional(@PathVariable String id, MultipartFile archivo, @RequestParam String nombreUsuario, @RequestParam String nombre, @RequestParam String apellido,
-                                    @RequestParam(required = false) Long DNI, @RequestParam("fechaDeNacimiento") String fechaDeNacimientoStr, @RequestParam String email, @RequestParam String password,
-                                    @RequestParam String password2, @RequestParam Especialidad especialidad, @RequestParam Provincias provincias, @RequestParam String localidad, @RequestParam String direccion,
-                                    @RequestParam int precioConsulta, @RequestParam Long matricula, ModelMap modelo, HttpSession session) {
+        @PostMapping("/editar/{id}")
+        public String editarProfesional(@PathVariable String id, MultipartFile archivo, @RequestParam String nombreUsuario, @RequestParam String nombre, @RequestParam String apellido,
+                                        @RequestParam(required = false) Long DNI, @RequestParam("fechaDeNacimiento") String fechaDeNacimientoStr, @RequestParam String email, @RequestParam String password,
+                                        @RequestParam String password2, @RequestParam Especialidad especialidad, @RequestParam Provincias provincias, @RequestParam String localidad, @RequestParam String direccion,
+                                        @RequestParam int precioConsulta, @RequestParam Long matricula, ModelMap modelo, HttpSession session) {
 
-        Date fechaDeNacimiento;
-        try {
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-            fechaDeNacimiento = dateFormat.parse(fechaDeNacimientoStr);
+            Date fechaDeNacimiento;
+            try {
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                fechaDeNacimiento = dateFormat.parse(fechaDeNacimientoStr);
 
-        } catch (ParseException p) {
-            modelo.put("error", "la fecha no puede venir vacía");
-            return "redirect:/profesional/editar";
+            } catch (ParseException p) {
+                modelo.put("error", "la fecha no puede venir vacía");
+                return "redirect:/profesional/editar";
+            }
+
+            try {
+
+                profesionalServicio.modificarProfesional(id, archivo, nombreUsuario, nombre, apellido, DNI, fechaDeNacimiento, email, password, password2, true, especialidad, provincias, localidad, direccion, matricula, precioConsulta);
+                modelo.put("exito", "Profesional modificado con exito");
+
+                Profesional profesionalActualizado = profesionalServicio.getOne(id);
+                session.setAttribute("profesionalActualizado", profesionalActualizado);
+
+            } catch (MiException ex) {
+                modelo.put("error", ex.getMessage());
+                return "redirect:/profesional/editar";
+            }
+            return "redirect:/";
         }
 
-        try {
-
-            profesionalServicio.modificarProfesional(id, archivo, nombreUsuario, nombre, apellido, DNI, fechaDeNacimiento, email, password, password2, true, especialidad, provincias, localidad, direccion, matricula, precioConsulta);
-            modelo.put("exito", "Profesional modificado con exito");
-
-            Profesional profesionalActualizado = profesionalServicio.getOne(id);
-            session.setAttribute("profesionalActualizado", profesionalActualizado);
-
-        } catch (MiException ex) {
-            modelo.put("error", ex.getMessage());
-            return "redirect:/profesional/editar";
+        @GetMapping("/cambiarContrasena")
+        public String mostrarFormularioCambioContrasena(ModelMap modelo, HttpSession session) {
+            String idProfesional = (String) session.getAttribute("profesionalId");
+            modelo.addAttribute("idProfesional", idProfesional);
+            return "cambiar_contrasena";
         }
-        return "redirect:/";
-    }
+
+        @PostMapping("/cambiarContrasena")
+        public String cambiarContrasena(@RequestParam String idProfesional,
+                @RequestParam String password,
+                @RequestParam String newPassword,
+                @RequestParam String newPasswordConfirm,
+                ModelMap modelo) {
+            try {
+                profesionalServicio.cambiarContrasena(idProfesional, password, newPassword, newPasswordConfirm);
+                modelo.addAttribute("exito", "Contraseña establecida con éxito"); 
+                return "index";
+            } catch (MiException ex) {
+                modelo.put("error", ex.getMessage());
+                System.out.println("Error al cambiar la contraseña: " + ex.getMessage());
+                return "redirect:/profesional/editar";
+            }
+        }
 }

@@ -15,29 +15,36 @@
 
 
 <div class="container mt-5">
-    <form class="card shadow p-5" th:action="@{/logincheck}" method="POST">
-        <div class="header text-center mb-4">
-            <h3>Inicia Sesión!</h3>
-        </div>
+   <form class="card shadow p-5" th:action="@{/logincheck}" method="POST">
+    <div class="header text-center mb-4">
+        <h3>Inicia Sesión!</h3>
+    </div>
 
-        <div class="mb-3">
-            <label for="username" class="form-label">Nombre de Usuario</label>
-            <input type="text" class="form-control" name="username" id="username"
-                   placeholder="Ingresa tu nombre de usuario">
-        </div>
-        <div class="mb-3">
-            <label for="password" class="form-label">Contraseña</label>
-            <input type="password" class="form-control" name="password" id="password"
-                   placeholder="Ingresa tu contraseña">
-        </div>
+    <div class="mb-3">
+        <label for="username" class="form-label">Nombre de Usuario</label>
+        <input type="text" class="form-control" name="username" id="username"
+               placeholder="Ingresa tu nombre de usuario">
+    </div>
+    <div class="mb-3">
+        <label for="password" class="form-label">Contraseña</label>
+        <input type="password" class="form-control" name="password" id="password"
+               placeholder="Ingresa tu contraseña">
+    </div>
 
-        <!-- <div th:replace="/layout/msg_error_exito :: mensajeFragment(${exito}, ${error})"></div> -->
+    <div th:if="${error}" class="error-message">
+        <p th:text="${error}"></p>
+    </div>
 
+    <button type="submit" class="btn btn-primary">Iniciar Sesión</button>
+    <p class="text-muted"> No estás registrado? <a class="text-active" th:href="@{/registroPaciente}">Registrate
+        aquí</a></p>
+</form>
 
-        <button type="submit" class="btn btn-primary">Iniciar Sesión</button>
-        <p class="text-muted"> No estás registrado? <a class="text-active" th:href="@{/registroPaciente}">Registrate
-            aquí</a></p>
-    </form>
+<div th:if="${exito}" class="alert alert-success">
+    <p th:text="${exito}"></p>
+</div>
+<div th:if="${error}" th:text="${error}"></div>
+
 </div>
 
 <section class=" text-center container">

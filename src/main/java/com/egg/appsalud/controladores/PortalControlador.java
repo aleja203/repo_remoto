@@ -9,6 +9,7 @@ import com.egg.appsalud.servicios.UsuarioServicio;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -35,8 +36,10 @@ public class PortalControlador {
 
 
     @GetMapping("/login")
-    public String login(@RequestParam(required = false) String error, ModelMap modelo) {
+    public String login(@RequestParam(required = false) String error, HttpSession session, ModelMap modelo) {
 
+        session.removeAttribute("exito");
+        
         if (error != null) {
             modelo.put("error", "El usuario o la contraseña son incorrectos");
         }

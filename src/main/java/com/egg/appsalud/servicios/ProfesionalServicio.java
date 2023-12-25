@@ -125,10 +125,18 @@ public Profesional crearProfesional(MultipartFile archivo, String nombreUsuario,
             profesional.setDireccion(direccion);
 
             profesional.setPrecioConsulta(precioConsulta);
-
-            Imagen imagen = imagenServicio.guardar(archivo);
-
-            profesional.setImagen(imagen);
+            
+             if (!archivo.isEmpty()) {
+                // Si se proporciona un nuevo archivo de imagen
+                Imagen imagen = imagenServicio.guardar(archivo);
+                profesional.setImagen(imagen);
+            } else {
+                // Si NO se proporciona un nuevo archivo de imagen, mantener la imagen actual
+                // No se realiza ninguna actualización de imagen en este caso
+                // Aquí podrías incluir un log o mensaje de control para confirmar que no se ha modificado la imagen
+                // Puedes usar un log o mensaje de depuración para verificar que no se actualizó la imagen
+                // Ejemplo: System.out.println("La imagen no se ha modificado");
+            }
 
             profesionalRepositorio.save(profesional);
 
@@ -288,4 +296,33 @@ public Profesional crearProfesional(MultipartFile archivo, String nombreUsuario,
 
         return usuarioRepositorio.findPacientesByProfesional(profesional);
     }
+    
+    @Transactional
+    public void cambiarContrasena(String idProfesional, String password, String newPassword, String newPasswordConfirm) throws MiException {
+        Optional<Profesional> respuesta = profesionalRepositorio.findById(idProfesional);
+        if (respuesta.isPresent()) {
+            Profesional profesional = respuesta.get();
+
+            if (verificarContrasena(password, profesional.getPassword())) {
+                if (newPassword.equals(newPasswordConfirm)) {
+                    // Cambiar la contraseña
+                    String nuevaContrasena = new BCryptPasswordEncoder().encode(newPassword);
+                    profesional.setPassword(nuevaContrasena);
+                    profesionalRepositorio.save(profesional);
+                } else {
+                    throw new MiException("Las nuevas contraseñas no coinciden");
+                }
+            } else {
+                throw new MiException("La contraseña actual es incorrecta");
+            }
+        } else {
+            throw new MiException("Profesional no encontrado"); // Agregar manejo para el caso cuando no se encuentra al profesional
+        }
+    }
+
+    private boolean verificarContrasena(String password, String storedPasswordHash) {
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        return encoder.matches(password, storedPasswordHash);
+    }
+
 }

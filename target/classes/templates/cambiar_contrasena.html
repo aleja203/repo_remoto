@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html
+        xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:th="http://www.thymeleaf.org"
+        xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+        lang="en"
+>
+<head th:replace="layout/head :: head"></head>
+
+<body>
+<!--<header th:replace="layout/header :: header"></header>-->
+<nav th:replace="layout/navbar :: navbar"></nav>
+
+
+
+
+<div class="container mt-5">
+    <script th:inline="javascript">
+        console.log("[[${exito}]]");
+    </script>
+    <form class="card shadow p-5" th:action="@{/profesional/cambiarContrasena}" method="POST">
+        <div class="header text-center mb-4">
+
+        <input hidden th:value="${session.usuariosession.id}" name="idProfesional">
+
+            <h3>Cambiar contraseña</h3>
+        </div>
+
+        <div class="mb-3">
+            <label for="username" class="form-label">Ingrese la contraseña actual</label>
+            <input type="password" class="form-control" name="password" id="password"
+                   placeholder="Ingresa tu contraseña actual">
+        </div>
+        
+        <div class="mb-3">
+            <label for="password" class="form-label">Ingrese la nueva contraseña</label>
+            <input type="password" class="form-control" name="newPassword" id="newPassword"
+                   placeholder="Ingresa tu nueva contraseña">
+        </div>
+
+        <div class="mb-3">
+            <label for="password" class="form-label">Reingrese la nueva contraseña</label>
+            <input type="password" class="form-control" name="newPasswordConfirm" id="newPasswordConfirm"
+                   placeholder="Reingresa tu nueva contraseña">
+        </div>
+
+
+        <!-- <div th:replace="/layout/msg_error_exito :: mensajeFragment(${exito}, ${error})"></div> -->
+
+
+        <button type="submit" class="btn btn-primary">Cambiar contraseña</button>
+        
+    </form>
+</div>
+
+<div th:if="${exito}" class="alert alert-success">
+    <p th:text="${exito}"></p>
+</div>
+
+<section class=" text-center container">
+    <div class="row mt-3">
+        <div class="divVolver">
+            <a th:href="@{/}" class="btn btn-primary">Volver</a>
+        </div>
+    </div>
+</section>
+
+<footer th:replace="layout/footer :: footer"></footer>
+<script
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"
+></script>
+</body>
+</html>
