@@ -99,8 +99,8 @@ public Profesional crearProfesional(MultipartFile archivo, String nombreUsuario,
                                      boolean activo, Especialidad especialidad, Provincias provincias, String localidad, String direccion,
                                      Long matricula, int precioConsulta) throws MiException {
 
-        validar(nombreUsuario, password, password2, nombre, apellido, fechaDeNacimiento, DNI, email);
-        validar(nombreUsuario, password, password2, nombre, apellido, fechaDeNacimiento, DNI, email);
+//        validar(nombreUsuario, password, password2, nombre, apellido, fechaDeNacimiento, DNI, email);
+//        validar(nombreUsuario, password, password2, nombre, apellido, fechaDeNacimiento, DNI, email);
 
 
         validar(nombreUsuario, password, password2, nombre, apellido, fechaDeNacimiento, DNI, email, matricula, especialidad, provincias, localidad, direccion);
@@ -324,5 +324,82 @@ public Profesional crearProfesional(MultipartFile archivo, String nombreUsuario,
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         return encoder.matches(password, storedPasswordHash);
     }
+    
+        @Transactional
+    public void editarProfesional(String id, MultipartFile archivo, String nombreUsuario, String nombre, String apellido,
+                                     Long DNI, Date fechaDeNacimiento, String email, boolean activo, Especialidad especialidad, Provincias provincias, String localidad, String direccion,
+                                     Long matricula, int precioConsulta) throws MiException {
+
+//        validar(nombreUsuario, nombre, apellido, fechaDeNacimiento, DNI, email);
+//        validar(nombreUsuario, nombre, apellido, fechaDeNacimiento, DNI, email);
+
+
+        validarEditar(nombreUsuario, nombre, apellido, fechaDeNacimiento, DNI, email, matricula, especialidad, provincias, localidad, direccion);
+
+        Optional<Profesional> respuesta = profesionalRepositorio.findById(id);
+        if (respuesta.isPresent()) {
+            Profesional profesional = respuesta.get();
+            profesional.setNombre(nombre);
+            profesional.setDNI(DNI);
+            profesional.setApellido(apellido);
+            profesional.setFechaDeNacimiento(fechaDeNacimiento);
+            profesional.setEmail(email);
+            profesional.setFechaDeAlta(new Date());
+            profesional.setActivo(activo);
+            profesional.setNombreUsuario(nombreUsuario);
+            profesional.setMatricula(matricula);
+            profesional.setEspecialidad(especialidad);
+
+            profesional.setProvincias(provincias);
+            profesional.setLocalidad(localidad);
+            profesional.setDireccion(direccion);
+
+            profesional.setPrecioConsulta(precioConsulta);
+            
+             if (!archivo.isEmpty()) {
+                // Si se proporciona un nuevo archivo de imagen
+                Imagen imagen = imagenServicio.guardar(archivo);
+                profesional.setImagen(imagen);
+            } else {
+                // Si NO se proporciona un nuevo archivo de imagen, mantener la imagen actual
+                // No se realiza ninguna actualización de imagen en este caso
+                // Aquí podrías incluir un log o mensaje de control para confirmar que no se ha modificado la imagen
+                // Puedes usar un log o mensaje de depuración para verificar que no se actualizó la imagen
+                // Ejemplo: System.out.println("La imagen no se ha modificado");
+            }
+
+            profesionalRepositorio.save(profesional);
+
+        }
+
+    }
+
+        public void validarEditar(String nombreUsuario, String nombre, String apellido, Date fechaDeNacimiento, Long DNI, String email, Long matricula, Especialidad especialidad, Provincias provincias, String localidad, String direccion) throws MiException {
+
+    if (nombreUsuario == null || nombreUsuario.isEmpty()) {
+        throw new MiException("El nombre de usuario no puede estar vacío o ser nulo");
+    }
+
+    if (nombre == null || nombre.isEmpty()) {
+        throw new MiException("El nombre no puede estar vacío o ser nulo");
+    }
+
+    if (apellido == null || apellido.isEmpty()) {
+        throw new MiException("El apellido no puede estar vacío o ser nulo");
+    }
+
+    if (DNI == null) {
+        throw new MiException("El DNI no puede ser nulo");
+    }
+
+    if (fechaDeNacimiento == null) {
+        throw new MiException("La fecha de nacimiento no puede ser nula");
+    }
+
+    if (email == null || email.isEmpty()) {
+        throw new MiException("El email no puede estar vacío o ser nulo");
+    }
+
+}
 
 }
